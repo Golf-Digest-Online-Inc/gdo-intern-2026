@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS public.payments (
+    id SERIAL PRIMARY KEY,
+    order_id INTEGER,
+    amount INTEGER NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

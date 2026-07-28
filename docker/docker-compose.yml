@@ -17,22 +17,26 @@ services:
       - "5000"
     depends_on:
       - postgres
-    environment:
-      DATABASE_URL: postgresql://appuser:apppassword@postgres:5432/appdb
+    # environment:
+    #   DATABASE_URL: postgresql://appuser:apppassword@postgres:5432/appdb
     volumes:
       - ./flask/src:/app
+      - ./flask/logs:/var/logs
     networks:
       - app-network
     restart: unless-stopped
 
   postgres:
     image: postgres:18.3
+    ports:
+      - 5432:5432
     environment:
       POSTGRES_USER: appuser
       POSTGRES_PASSWORD: apppassword
       POSTGRES_DB: appdb
     volumes:
       - postgres-data:/var/lib/postgresql
+      - ./postgresql:/sql
     networks:
       - app-network
     restart: unless-stopped

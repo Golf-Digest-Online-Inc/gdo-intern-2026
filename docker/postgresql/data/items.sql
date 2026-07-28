@@ -1,0 +1,32 @@
+INSERT INTO public.items
+(
+    name,
+    stock,
+    image
+)
+VALUES
+(
+    'キャディバッグ',
+    1,
+    'images/sports_golf_bag_self_stand.png'
+),
+(
+    'ドライバー',
+    5,
+    'images/golf_club_driver.png'
+),
+(
+    'アイアン',
+    0,
+    'images/golf_club_iron.png'
+),
+(
+    'ボール',
+    10,
+    'images/golf_ball.png'
+),
+(
+    'パター',
+    7,
+    'images/golf_club_putter.png'
+);

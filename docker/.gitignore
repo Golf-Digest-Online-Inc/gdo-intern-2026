@@ -1,6 +1,6 @@
 # 環境変数
 .env
-.env.*
+# .env.*
 
 # Python
 __pycache__/

@@ -1,0 +1,7 @@
+CREATE TABLE public.orders (
+    id SERIAL PRIMARY KEY,
+    item_id INTEGER NOT NULL,
+    quantity INTEGER NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
