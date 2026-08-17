@@ -80,7 +80,7 @@ def buy():
     except Exception as e:
         return jsonify({"db": "error", "detail": str(e)}), 500
     message = "購入しました"
-    logging.debug(message, item["stock"])
+    logging.debug(message + "　残在庫数：" + str(item["stock"]))
     return jsonify({"message": message, "stock": item["stock"]})
 
 
@@ -103,4 +103,5 @@ def db_check():
     
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    isDebug = LOG_LEVEL == "DEBUG"
+    app.run(host="0.0.0.0", port=5000, debug=isDebug)
