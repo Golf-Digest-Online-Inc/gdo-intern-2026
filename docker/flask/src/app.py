@@ -60,31 +60,62 @@ def buy():
     # POSTで送られてきたデータをデバッグログに出力
     logging.debug(data)
     id = int(data.get("id"))
-    try:
-        conn = get_connection()
-        cur = conn.cursor(cursor_factory=RealDictCursor)
-        # 注文を登録
-        cur.execute("INSERT INTO public.orders (item_id, quantity, status) VALUES (%s, 1, 'PAID') RETURNING id", (id,))
-        conn.commit()
-        order_id = cur.fetchone()['id']
-        # 決済を登録
-        cur.execute("INSERT INTO public.payments (order_id, amount, status) VALUES (%s, 1000, 'SUCCESS')", (order_id,))
-        conn.commit()
-        # リクエスト対象の在庫を減らす
-        cur.execute("UPDATE public.items SET stock = stock - 1 WHERE id = %s", (id,))
-        conn.commit()
-        # SQLを実行
-        cur.execute("SELECT * FROM public.items WHERE id = %s", (id,))
-        # 実行結果からデータを取得
-        item = cur.fetchone()
-        # 取得したデータをデバッグレベルでログに出力
-        logging.debug(item)
-        conn.close()
-    except Exception as e:
-        return jsonify({"db": "error", "detail": str(e)}), 500
-    message = "購入しました"
-    logging.debug(message + "　残在庫数：" + str(item["stock"]))
-    return jsonify({"message": message, "stock": item["stock"]})
+    with get_connection() as conn:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            try:
+                # SQLを実行
+                cur.execute("SELECT * FROM public.items WHERE id = %s FOR UPDATE", (id,))
+                # 在庫を確認
+                item = cur.fetchone()
+                if item["stock"] < 1:
+                    message = "申し訳ありません。売り切れました"
+                    return jsonify({"message": message, "stock": item["stock"]})
+
+                # 注文を登録
+                cur.execute("INSERT INTO public.orders (item_id, quantity, status) VALUES (%s, 1, 'PAID') RETURNING id", (id,))
+                order_id = cur.fetchone()['id']
+                # 決済を登録
+                cur.execute("INSERT INTO public.payments (order_id, amount, status) VALUES (%s, 1000, 'SUCCESS')", (order_id,))
+                # リクエスト対象の在庫を減らす
+                cur.execute("UPDATE public.items SET stock = stock - 1 WHERE id = %s", (id,))
+                conn.commit()
+                # SQLを実行
+                cur.execute("SELECT * FROM public.items WHERE id = %s", (id,))
+                # 実行結果からデータを取得
+                item = cur.fetchone()
+                # 取得したデータをデバッグレベルでログに出力
+                logging.debug(item)
+            except Exception as e:
+                conn.rollback()
+                return jsonify({"db": "error", "detail": str(e)}), 500
+            message = "購入しました"
+            logging.debug(message + "　残在庫数：" + str(item["stock"]))
+            return jsonify({"message": message, "stock": item["stock"]})
+    # try:
+    #     conn = get_connection()
+    #     cur = conn.cursor(cursor_factory=RealDictCursor)
+    #     # 注文を登録
+    #     cur.execute("INSERT INTO public.orders (item_id, quantity, status) VALUES (%s, 1, 'PAID') RETURNING id", (id,))
+    #     conn.commit()
+    #     order_id = cur.fetchone()['id']
+    #     # 決済を登録
+    #     cur.execute("INSERT INTO public.payments (order_id, amount, status) VALUES (%s, 1000, 'SUCCESS')", (order_id,))
+    #     conn.commit()
+    #     # リクエスト対象の在庫を減らす
+    #     cur.execute("UPDATE public.items SET stock = stock - 1 WHERE id = %s", (id,))
+    #     conn.commit()
+    #     # SQLを実行
+    #     cur.execute("SELECT * FROM public.items WHERE id = %s", (id,))
+    #     # 実行結果からデータを取得
+    #     item = cur.fetchone()
+    #     # 取得したデータをデバッグレベルでログに出力
+    #     logging.debug(item)
+    #     conn.close()
+    # except Exception as e:
+    #     return jsonify({"db": "error", "detail": str(e)}), 500
+    # message = "購入しました"
+    # logging.debug(message + "　残在庫数：" + str(item["stock"]))
+    # return jsonify({"message": message, "stock": item["stock"]})
 
 
 @app.route("/health")
