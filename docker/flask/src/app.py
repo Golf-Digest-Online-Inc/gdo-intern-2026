@@ -65,13 +65,18 @@ def buy():
         cur = conn.cursor(cursor_factory=RealDictCursor)
         # 注文を登録
         cur.execute("INSERT INTO public.orders (item_id, quantity, status) VALUES (%s, 1, 'PAID') RETURNING id", (id,))
-        conn.commit()
+        # conn.commit()
         order_id = cur.fetchone()['id']
         # 決済を登録
         cur.execute("INSERT INTO public.payments (order_id, amount, status) VALUES (%s, 1000, 'SUCCESS')", (order_id,))
-        conn.commit()
+        # conn.commit()
         # リクエスト対象の在庫を減らす
-        cur.execute("UPDATE public.items SET stock = stock - 1 WHERE id = %s", (id,))
+        cur.execute("UPDATE public.items SET stock = stock - 1 WHERE id = %s AND STOCK > 0 RETURNING stock", (id,))
+        item = cur.fetchone()
+        if item is None : 
+            conn.rollback() 
+            conn.close() 
+            return jsonify({"message":"在庫切れです","stock":0}),200
         conn.commit()
         # SQLを実行
         cur.execute("SELECT * FROM public.items WHERE id = %s", (id,))
