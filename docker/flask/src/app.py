@@ -44,6 +44,9 @@ def index():
                 cur.execute("SELECT * FROM public.items ORDER BY id ASC")
                 # 実行結果からデータを取得
                 items = cur.fetchall()
+                for item in items:
+                    if item["stock"]<0:
+                        item["stock"]=0
                 # 取得したデータをデバッグレベルでログに出力
                 logging.debug(items)
                 # データベースからデータを取得してテンプレート（HTMLの土台）に渡す
@@ -65,22 +68,25 @@ def buy():
         cur = conn.cursor(cursor_factory=RealDictCursor)
         # 注文を登録
         cur.execute("INSERT INTO public.orders (item_id, quantity, status) VALUES (%s, 1, 'PAID') RETURNING id", (id,))
-        conn.commit()
         order_id = cur.fetchone()['id']
         # 決済を登録
         cur.execute("INSERT INTO public.payments (order_id, amount, status) VALUES (%s, 1000, 'SUCCESS')", (order_id,))
-        conn.commit()
         # リクエスト対象の在庫を減らす
-        cur.execute("UPDATE public.items SET stock = stock - 1 WHERE id = %s", (id,))
-        conn.commit()
-        # SQLを実行
-        cur.execute("SELECT * FROM public.items WHERE id = %s", (id,))
-        # 実行結果からデータを取得
+        cur.execute("UPDATE public.items SET stock = stock - 1 WHERE id = %s AND stock >0 RETURNING stock", (id,))
         item = cur.fetchone()
+        if item is None:
+            conn.rollback()
+            conn.close()
+            return jsonify({"message":"在庫切れです"}),200
+        # SQLを実行
+        conn.commit()
+        # 実行結果からデータを取得
+        conn.close()
         # 取得したデータをデバッグレベルでログに出力
         logging.debug(item)
-        conn.close()
     except Exception as e:
+        conn.rollback()
+        conn.close()
         return jsonify({"db": "error", "detail": str(e)}), 500
     message = "購入しました"
     logging.debug(message + "　残在庫数：" + str(item["stock"]))
