@@ -71,7 +71,16 @@ def buy():
         cur.execute("INSERT INTO public.payments (order_id, amount, status) VALUES (%s, 1000, 'SUCCESS')", (order_id,))
         conn.commit()
         # リクエスト対象の在庫を減らす
-        cur.execute("UPDATE public.items SET stock = stock - 1 WHERE id = %s", (id,))
+        cur.execute(
+        "UPDATE public.items SET stock = stock - 1 WHERE id = %s AND stock > 0",
+        (id,)
+            )
+        if cur.rowcount == 0:
+            conn.close()
+            return jsonify({
+                "message": "これ以上購入できません、売り切れました",
+                "stock": 0
+            })
         conn.commit()
         # SQLを実行
         cur.execute("SELECT * FROM public.items WHERE id = %s", (id,))
