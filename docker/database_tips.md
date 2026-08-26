@@ -55,3 +55,7 @@
 `docker compose exec postgres bash`
 
 `pg_dump -U appuser -d appdb -t items --inserts --no-owner --no-privileges > /sql/dump/items.sql`
+
+##### ダンプしたデータを反映
+
+`\i /sql/dump/items.sql`
