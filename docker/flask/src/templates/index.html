@@ -6,28 +6,68 @@
     <link rel="icon" href="https://www.golfdigest.co.jp/favicon.ico">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.styles.css') }}">
   </head>
+
   <body>
-    {% for item in items %}
-    <div class="whole">
-      <div class="item" data-id="{{ item.id }}">
-        <div class="thumbnail">
-          <img src="{{ url_for('static', filename=item.image) }}">
+    <header>
+      <h1>Golf Shop</h1>
+    </header>
+
+  <div class="container">
+    <div class="item-list">
+      {% for item in items %}
+      <div class="whole {% if item.stock==0 %}soldout{% endif %}" data-name="{{ item.name }}" data-price="{{item.price}}">
+        <div class="item" data-id="{{ item.id }}">
+          <div class="thumbnail">
+            <img src="{{ url_for('static', filename=item.image) }}">
+          </div>
+
+          <div class="detail">
+            <div class="name">
+              <p>{{ item.name }}</p>
+            </div>
+            <div class="price">
+              <p>￥{{"{:,}".format(item.price)}}</p>
+            </div>
+            <div class="stock">
+              <p>残り<span>{{ item.stock }}</span>個</p>
+            </div>
+          </div>
         </div>
-        <div class="detail">
-          <div class="name">
-            <p>{{ item.name }}</p>
-          </div>
-          <div class="stock">
-            <p>残り<span>{{ item.stock }}</span>個</p>
-          </div>
+
+        <div class="footer">
+          <button type="button" name="buy">購入</button>
         </div>
       </div>
-      <div class="footer">
-        <!-- <button type="button" name="buy" disabled="disabled">購入</button> -->
-        <button type="button" name="buy">購入</button>
-      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-    <script type="module" src="{{ url_for('static', filename='js/index.js') }}" defer></script>
-  </body>
+
+    <div class="sidebar">
+      <button onclick="filterItems('all')">すべて</button>
+      <button onclick="filterItems('ボール')">ボール</button>
+      <button onclick="filterItems('アイアン')">アイアン</button>
+      <button onclick="filterItems('ドライバー')">ドライバー</button>
+      <button onclick="filterItems('パター')">パター</button>
+      <button onclick="filterItems('キャディバッグ')">キャディ　バッグ</button>
+      
+      <hr>
+      <button class="menu-btn">🛒 カート</button>
+      <button class="menu-btn">マイページ</button>
+
+      <hr>
+      <p>注文数:<span id="order-count">0</span>個</p>
+      <p>合計金額:￥<span id="total-price">0</span></p>
+
+      <hr>
+    </div>
+
+  </div>
+
+  <script
+    src="{{ url_for('static', filename='js/index.js') }}"
+    defer>
+  </script>
+</body>
+
+  
+
 </html>

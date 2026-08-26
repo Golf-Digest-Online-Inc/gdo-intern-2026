@@ -41,9 +41,10 @@ def index():
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
             try:
                 # SQLを実行
-                cur.execute("SELECT * FROM public.items ORDER BY id ASC")
+                cur.execute("SELECT * FROM public.items ORDER BY name ASC")
                 # 実行結果からデータを取得
                 items = cur.fetchall()
+
                 # 取得したデータをデバッグレベルでログに出力
                 logging.debug(items)
                 # データベースからデータを取得してテンプレート（HTMLの土台）に渡す
@@ -56,7 +57,7 @@ def index():
 def buy():
     data = request.get_json()
     # 同時アクセスを再現しやすいように5秒待機させる
-    time.sleep(5)
+    # time.sleep(5)
     # POSTで送られてきたデータをデバッグログに出力
     logging.debug(data)
     id = int(data.get("id"))
