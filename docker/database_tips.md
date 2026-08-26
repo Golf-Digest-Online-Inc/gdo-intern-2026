@@ -42,6 +42,16 @@
 
 `SELECT * FROM public.payments ORDER BY id ASC;`
 
+##### データを更新
+
+`UPDATE {テーブル名} SET {カラム名} = {値} WHERE id = {id};`
+
 ##### コンソールを終了
 
 `\q`
+
+##### データベースのデータを外部に移行できるよう出力する
+
+`docker compose exec postgres bash`
+
+`pg_dump -U appuser -d appdb -t items --inserts --no-owner --no-privileges > /sql/dump/items.sql`
