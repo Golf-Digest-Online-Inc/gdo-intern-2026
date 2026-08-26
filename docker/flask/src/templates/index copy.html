@@ -1,0 +1,20 @@
+<div class="item">
+
+{% if item.name == "ゴルフボール" %}
+<img src="/assets/images/golf_ball.png" altname == "ドライバー" %}
+<img src="/assets/images/golf_club_driverlif item.name == "アイアン" %}
+<img src="/assets/images/golf_club_iron.pngitem.name == "パター" %}
+<img src="/assets/images/golf_club_putter.png" alt="me == "キャディバッグ" %}
+<img src="/assets/images/sports_glf_stand.png
+
+{% endif %}
+
+<h2>{{ item.name }}</h2>
+
+<p>在庫: {{ item.stock }}</p>
+
+<button onclick="buyItem({{ item.id }})">
+購入
+</button>
+
+</div>

@@ -7,6 +7,31 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.styles.css') }}">
   </head>
   <body>
+    <header>
+
+<h1>🏌️ Golf Shop</h1>
+
+<form method="GET">
+
+<input
+type="text"
+name="q"
+value="{{ keyword }}"
+placeholder="商品検索">
+
+<button type="submit">
+検索
+</button>
+
+</form>
+
+/cart
+  　カート
+</a>
+
+
+</header>
+<div class="products">
     {% for item in items %}
     <div class="whole">
       <div class="item" data-id="{{ item.id }}">
@@ -17,17 +42,24 @@
           <div class="name">
             <p>{{ item.name }}</p>
           </div>
-          <div class="stock">
-            <p>残り<span>{{ item.stock }}</span>個</p>
-          </div>
+              <p class="price">
+                {{ item.price }}円
+              </p>
+          <div class="stock-buy">
+
+    <p>
+        残り<span>{{ item.stock }}</span>個
+    </p>
+
+    <button type="button" name="buy">
+        購入
+    </button>
+</div>
         </div>
-      </div>
-      <div class="footer">
-        <!-- <button type="button" name="buy" disabled="disabled">購入</button> -->
-        <button type="button" name="buy">購入</button>
       </div>
     </div>
     {% endfor %}
+    </div>
     <script type="module" src="{{ url_for('static', filename='js/index.js') }}" defer></script>
   </body>
 </html>

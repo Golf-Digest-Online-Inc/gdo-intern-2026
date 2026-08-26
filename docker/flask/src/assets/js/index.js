@@ -1,5 +1,5 @@
 (() => {
-  document.querySelectorAll("button").forEach((el, i) => {
+  document.querySelectorAll("button[name='buy']").forEach((el, i) => {
     const stock = el.closest(".whole").querySelector(".stock span").innerText;
     // if (stock > 0) {
       // 在庫が1以上の場合はボタンを有効にする

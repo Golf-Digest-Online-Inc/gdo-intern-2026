@@ -4,7 +4,7 @@ import logging
 import json
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, redirect
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -37,19 +37,38 @@ def get_connection():
 
 @app.route("/")
 def index():
+
+    keyword = request.args.get("q","")
+
     with get_connection() as conn:
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
-            try:
-                # SQLを実行
-                cur.execute("SELECT * FROM public.items ORDER BY id ASC")
-                # 実行結果からデータを取得
-                items = cur.fetchall()
-                # 取得したデータをデバッグレベルでログに出力
-                logging.debug(items)
-                # データベースからデータを取得してテンプレート（HTMLの土台）に渡す
-                return render_template("index.html", items=items)
-            except Exception as e:
-                return jsonify({"db": "error", "detail": str(e)}), 500
+
+            if keyword:
+                cur.execute(
+                    """
+                    SELECT *
+                    FROM items
+                    WHERE name ILIKE %s
+                    ORDER BY id
+                    """,
+                    (f"%{keyword}%",)
+                )
+            else:
+                cur.execute(
+                    "SELECT * FROM items ORDER BY id"
+                )
+
+            items = cur.fetchall()
+
+    # return render_template(
+    #     "index.html",
+    #     items=items,
+    #     keyword=keyword
+    # )
+    return render_template(
+        "index.html",
+        items=items
+    )
 
 
 @app.route("/buy", methods=["POST"])
@@ -65,9 +84,11 @@ def buy():
         cur = conn.cursor(cursor_factory=RealDictCursor)
         # 注文を登録
         cur.execute("INSERT INTO public.orders (item_id, quantity, status) VALUES (%s, 1, 'PAID') RETURNING id", (id,))
+        conn.commit()
         order_id = cur.fetchone()['id']
         # 決済を登録
         cur.execute("INSERT INTO public.payments (order_id, amount, status) VALUES (%s, 1000, 'SUCCESS')", (order_id,))
+        conn.commit()
         # リクエスト対象の在庫を減らす
         cur.execute(
         "UPDATE public.items SET stock = stock - 1 WHERE id = %s AND stock > 0",
@@ -97,6 +118,22 @@ def buy():
     logging.debug(message + "　残在庫数：" + str(item["stock"]))
     return jsonify({"message": message, "stock": item["stock"]})
 
+cart = []
+@app.route("/cart")
+def cart_view():
+
+    return render_template(
+        "cart.html",
+        cart=cart
+    )
+@app.route("/add-cart", methods=["POST"])
+def add_cart():
+
+    data = request.get_json()
+
+    cart.append(data)
+
+    return jsonify({"ok":True})
 
 @app.route("/health")
 def health():
@@ -113,7 +150,95 @@ def db_check():
                 logging.debug(rows)
                 return jsonify({"db": "connected", "rows": rows})
             except Exception as e:
-                return jsonify({"db": "error", "detail": str(e)}), 500
+                import traceback
+                traceback.print_exc()
+
+    return jsonify({
+            "db":"error",
+            "detail":str(e)
+    }),500
+
+@app.route("/reset-stock")
+def reset_stock():
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+
+            cur.execute("""
+                UPDATE public.items
+                SET stock = 10
+            """)
+
+            cur.execute("""
+                UPDATE public.items
+                SET price = 1980
+                WHERE name = 'ボール'
+            """)
+
+            conn.commit()
+
+    return "OK"
+
+@app.route("/admin")
+def admin():
+
+    with get_connection() as conn:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+
+            cur.execute(
+                "SELECT * FROM public.items ORDER BY id ASC"
+            )
+
+            items = cur.fetchall()
+
+    return render_template(
+        "admin.html",
+        items=items
+    )
+
+
+@app.route("/restock/<int:item_id>")
+def restock(item_id):
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+
+            cur.execute(
+                """
+                UPDATE public.items
+                SET stock = stock + 5
+                WHERE id = %s
+                """,
+                (item_id,)
+            )
+
+            conn.commit()
+
+    return redirect("/admin")
+
+
+if __name__ == "__main__":
+    isDebug = LOG_LEVEL == "DEBUG"
+    app.run(host="0.0.0.0", port=5000, debug=isDebug)
+
+@app.route("/restock/<int:item_id>")
+def restock(item_id):
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+
+            cur.execute(
+                """
+                UPDATE items
+                SET stock = stock + 5
+                WHERE id = %s
+                """,
+                (item_id,)
+            )
+
+            conn.commit()
+
+    return redirect("/admin")
     
 
 if __name__ == "__main__":
