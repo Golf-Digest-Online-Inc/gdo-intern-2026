@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>注文履歴 - Golf Shop</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/orders.styles.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<header class="header">
+
+    <div class="logo">
+        GOLF SHOP
+    </div>
+
+    <nav>
+
+        <a href="/">
+            商品一覧
+        </a>
+
+        <a href="/orders">
+            注文履歴
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main>
+
+    <section class="hero">
+
+        <p class="hero-subtitle">
+            ORDER HISTORY
+        </p>
+
+        <h1>
+            注文履歴
+        </h1>
+
+        <p>
+            これまでの注文を確認できます。
+        </p>
+
+    </section>
+
+
+    <section class="orders">
+
+        {% if orders %}
+
+            {% for order in orders %}
+
+            <div
+                class="order-card"
+                data-order-id="{{ order.order_id }}"
+            >
+
+                <div class="order-image">
+
+                    <img
+                        src="{{ url_for('static', filename=order.image) }}"
+                        alt="{{ order.item_name }}"
+                    >
+
+                </div>
+
+
+                <div class="order-info">
+
+                    <p class="order-label">
+                        ORDER #{{ order.order_id }}
+                    </p>
+
+                    <h2>
+                        {{ order.item_name }}
+                    </h2>
+
+                    <p>
+                        数量：
+                        {{ order.quantity }}
+                    </p>
+
+                    <p class="price">
+                        ¥{{ "{:,}".format(order.amount) }}
+                    </p>
+
+
+                    {% if order.order_status == "CANCELLED" %}
+
+                        <p class="status cancelled">
+                            CANCELLED
+                        </p>
+
+                    {% else %}
+
+                        <p class="status completed">
+                            購入済み
+                        </p>
+
+                        <button
+                            type="button"
+                            class="cancel-button"
+                        >
+                            この注文をキャンセル
+                        </button>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty">
+
+                <h2>
+                    注文履歴はありません
+                </h2>
+
+                <p>
+                    商品を購入すると、ここに表示されます。
+                </p>
+
+                <a href="/">
+                    商品を見る
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+
+<script
+    src="{{ url_for('static', filename='js/orders.js') }}"
+    defer
+></script>
+
+
+</body>
+
+</html>

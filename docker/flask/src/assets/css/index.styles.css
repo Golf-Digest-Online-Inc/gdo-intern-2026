@@ -1,58 +1,527 @@
-p {
-    margin: unset;
+* {
+    box-sizing: border-box;
 }
 
-img {
-    width: 200px;
+html {
+    scroll-behavior: smooth;
 }
+
+body {
+    margin: 0;
+    color: #1d241f;
+    font-family:
+        Arial,
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        sans-serif;
+
+    /* ページ全体をゴルフ場背景にする */
+    background-image:
+        linear-gradient(
+            rgba(20, 35, 20, 0.18),
+            rgba(20, 35, 20, 0.18)
+        ),
+        url("/assets/images/G43_6Vc0ZkxCNviz-FfQDK-ad5kdltbDQeDG1mbyUhVVRG85Z93wwuUT_CgSFYeLnqbNX7Pp7mhK7-bmvbRTxfOXSfjeWw_Y6rCVDIbOa-zGMPmHh_-T1X9vTWBVd_LEYKnoZ63SPfoafJfdA7R4Vo6AORpi8m6Q-219d386HpKE5Pz29HNSI0SoTEctwVjn.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+
+/* =========================
+   Header
+========================= */
+
+.header {
+    height: 72px;
+    padding: 0 56px;
+
+    background: rgba(12, 15, 13, 0.98);
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+}
+
+.logo {
+    font-size: 21px;
+    font-weight: bold;
+    letter-spacing: 5px;
+}
+
+.header nav {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+}
+
+.header nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+
+    transition: color 0.2s ease;
+}
+
+.header nav a:hover {
+    color: #c7a95b;
+}
+
+
+/* =========================
+   Main
+========================= */
+
+main {
+    max-width: 1450px;
+    margin: 0 auto;
+    padding: 0 28px 100px;
+}
+
+
+/* =========================
+   Hero
+========================= */
+
+.hero {
+    min-height: 500px;
+
+    padding: 80px 70px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    background-image:
+        linear-gradient(
+            90deg,
+            rgba(8, 25, 12, 0.72) 0%,
+            rgba(8, 25, 12, 0.42) 48%,
+            rgba(8, 25, 12, 0.08) 100%
+        ),
+        url("/assets/images/G43_6Vc0ZkxCNviz-FfQDK-ad5kdltbDQeDG1mbyUhVVRG85Z93wwuUT_CgSFYeLnqbNX7Pp7mhK7-bmvbRTxfOXSfjeWw_Y6rCVDIbOa-zGMPmHh_-T1X9vTWBVd_LEYKnoZ63SPfoafJfdA7R4Vo6AORpi8m6Q-219d386HpKE5Pz29HNSI0SoTEctwVjn.jpg");
+
+    background-size: cover;
+    background-position: center;
+
+    color: white;
+
+    border-radius: 0 0 28px 28px;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.hero-subtitle {
+    margin: 0 0 16px;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    letter-spacing: 6px;
+
+    color: #d6b866;
+}
+
+.hero h1 {
+    max-width: 900px;
+
+    margin: 0 0 20px;
+
+    font-size: 50px;
+    line-height: 1.25;
+
+    font-weight: 700;
+
+    color: white;
+
+    text-shadow:
+        0 3px 15px rgba(0, 0, 0, 0.45);
+}
+
+.hero > p:last-child {
+    margin: 0;
+
+    font-size: 16px;
+    line-height: 1.8;
+
+    color: rgba(255, 255, 255, 0.92);
+}
+
+
+/* =========================
+   Products Area
+========================= */
+
+.products {
+    position: relative;
+
+    margin-top: 40px;
+    padding: 45px 44px 50px;
+
+    background: rgba(248, 247, 239, 0.94);
+
+    border: 1px solid rgba(255, 255, 255, 0.7);
+
+    border-radius: 28px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.18);
+
+    backdrop-filter: blur(8px);
+
+    display: grid;
+
+    grid-template-columns: repeat(5, 1fr);
+
+    gap: 24px;
+}
+
+
+/* 商品一覧タイトルを追加する場合 */
+
+.products::before {
+    content: "PRODUCTS";
+
+    position: absolute;
+
+    top: -17px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    padding: 7px 24px;
+
+    background: #214d2d;
+
+    color: #fff;
+
+    border-radius: 30px;
+
+    font-size: 12px;
+    font-weight: bold;
+
+    letter-spacing: 4px;
+
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+
+/* =========================
+   Product Card
+========================= */
 
 .whole {
-    width: 480px;
-    border: 3px double;
-    margin-bottom: 24px;
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border: 1px solid rgba(35, 65, 43, 0.08);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 25px rgba(24, 43, 29, 0.10);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
-.item {
-    display: flex;
+.whole:hover {
+    transform: translateY(-7px);
+
+    box-shadow:
+        0 18px 40px rgba(24, 43, 29, 0.18);
 }
+
+
+/* =========================
+   Product Image
+========================= */
 
 .thumbnail {
-    width: 240px;
-    height: 240px;
+    width: 100%;
+    height: 220px;
+
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f8f9f5,
+            #eef1eb
+        );
+
+    overflow: hidden;
+
+    position: relative;
 }
+
+.thumbnail::after {
+    content: "";
+
+    position: absolute;
+
+    left: 15%;
+    right: 15%;
+    bottom: 12px;
+
+    height: 1px;
+
+    background: rgba(33, 77, 45, 0.12);
+}
+
+.thumbnail img {
+    width: 82%;
+    height: 82%;
+
+    object-fit: contain;
+
+    transition:
+        transform 0.35s ease;
+}
+
+.whole:hover .thumbnail img {
+    transform: scale(1.07);
+}
+
+
+/* =========================
+   Product Detail
+========================= */
 
 .detail {
-    width: 240px;
-    height: 240px;
+    padding: 22px 22px 10px;
 }
 
-.name,
-.stock
-{
-    height: 100px;
+.name p {
+    margin: 0;
+
+    font-size: 18px;
+    line-height: 1.5;
+
+    font-weight: bold;
+
+    color: #1d241f;
 }
 
-button[name="add"] {
-    height: fit-content;
+
+/* =========================
+   Price
+========================= */
+
+.price {
+    margin-top: 8px;
 }
+
+.price p {
+    margin: 0;
+
+    font-size: 22px;
+
+    font-weight: 700;
+
+    color: #214d2d;
+}
+
+
+/* =========================
+   Stock
+========================= */
+
+.stock {
+    margin-top: 15px;
+}
+
+.stock p {
+    margin: 0;
+
+    display: flex;
+    align-items: baseline;
+
+    color: #999;
+
+    font-size: 12px;
+}
+
+.stock span {
+    margin: 0 5px;
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    color: #252b27;
+}
+
+.low-stock {
+    color: #a87819 !important;
+}
+
+.low-stock span {
+    color: #a87819;
+}
+
+.sold-out {
+    color: #999 !important;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+}
+
+
+/* =========================
+   Button
+========================= */
 
 .footer {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 12px;
+    padding: 16px 22px 22px;
 }
 
-.detail,
-.footer
-{
-    margin-right: 24px;
+button[name="buy"] {
+    width: 100%;
+    height: 48px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #214d2d;
+
+    color: white;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.5px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 5px 12px rgba(33, 77, 45, 0.18);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-.stock > p > span {
-    font-size: 3em;
-    margin-left: 8px;
-    margin-right: 8px;
+button[name="buy"]:hover {
+    background: #173b22;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 18px rgba(33, 77, 45, 0.25);
+}
+
+button[name="buy"]:disabled {
+    background: #ddd;
+
+    color: #999;
+
+    cursor: not-allowed;
+
+    box-shadow: none;
+
+    transform: none;
+}
+
+
+/* =========================
+   Tablet
+========================= */
+
+@media (max-width: 1100px) {
+
+    main {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .products {
+        grid-template-columns: repeat(3, 1fr);
+        padding: 40px 28px;
+    }
+}
+
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 700px) {
+
+    .header {
+        height: 64px;
+        padding: 0 20px;
+    }
+
+    .logo {
+        font-size: 17px;
+        letter-spacing: 3px;
+    }
+
+    .header nav {
+        gap: 16px;
+    }
+
+    .header nav a {
+        font-size: 12px;
+    }
+
+    main {
+        padding: 0 10px 60px;
+    }
+
+    .hero {
+        min-height: 430px;
+
+        padding: 55px 28px;
+
+        border-radius: 0 0 20px 20px;
+    }
+
+    .hero-subtitle {
+        font-size: 10px;
+        letter-spacing: 4px;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+        line-height: 1.35;
+    }
+
+    .hero > p:last-child {
+        font-size: 13px;
+    }
+
+    .products {
+        grid-template-columns: 1fr;
+
+        padding: 38px 18px;
+
+        border-radius: 20px;
+
+        gap: 18px;
+    }
+
+    .thumbnail {
+        height: 240px;
+    }
 }

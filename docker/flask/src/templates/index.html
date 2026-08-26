@@ -1,33 +1,245 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="ja">
+
+<head>
     <meta charset="UTF-8">
-    <title>トップページ</title>
-    <link rel="icon" href="https://www.golfdigest.co.jp/favicon.ico">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.styles.css') }}">
-  </head>
-  <body>
-    {% for item in items %}
-    <div class="whole">
-      <div class="item" data-id="{{ item.id }}">
-        <div class="thumbnail">
-          <img src="{{ url_for('static', filename=item.image) }}">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Golf Shop</title>
+
+    <link
+        rel="icon"
+        href="https://www.golfdigest.co.jp/favicon.ico"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/index.styles.css') }}"
+    >
+</head>
+
+
+<body>
+
+    <!-- =========================
+         Header
+    ========================== -->
+
+    <header class="header">
+
+        <div class="logo">
+            GOLF SHOP
         </div>
-        <div class="detail">
-          <div class="name">
-            <p>{{ item.name }}</p>
-          </div>
-          <div class="stock">
-            <p>残り<span>{{ item.stock }}</span>個</p>
-          </div>
-        </div>
-      </div>
-      <div class="footer">
-        <!-- <button type="button" name="buy" disabled="disabled">購入</button> -->
-        <button type="button" name="buy">購入</button>
-      </div>
-    </div>
-    {% endfor %}
-    <script type="module" src="{{ url_for('static', filename='js/index.js') }}" defer></script>
-  </body>
+
+        <nav>
+
+            <a href="/">
+                商品一覧
+            </a>
+
+            <a href="/orders">
+                注文履歴
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =========================
+         Main
+    ========================== -->
+
+    <main>
+
+
+        <!-- =========================
+             Hero
+        ========================== -->
+
+        <section class="hero">
+
+            <p class="hero-subtitle">
+                GOLF COLLECTION
+            </p>
+
+            <h1>
+                お気に入りのアイテムを見つけよう。
+            </h1>
+
+            <p>
+                厳選されたゴルフアイテムを取り揃えています。
+            </p>
+
+        </section>
+
+
+
+        <!-- =========================
+             Products
+        ========================== -->
+
+        <section class="products">
+
+            {% for item in items %}
+
+            <div class="whole">
+
+
+                <!-- 商品 -->
+
+                <div
+                    class="item"
+                    data-id="{{ item.id }}"
+                >
+
+
+                    <!-- 商品画像 -->
+
+                    <div class="thumbnail">
+
+                        <img
+                            src="{{ url_for('static', filename=item.image) }}"
+                            alt="{{ item.name }}"
+                        >
+
+                    </div>
+
+
+
+                    <!-- 商品情報 -->
+
+                    <div class="detail">
+
+
+                        <!-- 商品名 -->
+
+                        <div class="name">
+
+                            <p>
+                                {{ item.name }}
+                            </p>
+
+                        </div>
+
+
+
+                        <!-- 価格 -->
+
+                        <div class="price">
+
+                            <p>
+                                ¥{{ "{:,}".format(item.price) }}
+                            </p>
+
+                        </div>
+
+
+
+                        <!-- 在庫 -->
+
+                        <div class="stock">
+
+                            {% if item.stock == 0 %}
+
+                            <p class="sold-out">
+                                SOLD OUT
+                            </p>
+
+
+                            {% elif item.stock <= 3 %}
+
+                            <p class="low-stock">
+
+                                残り
+
+                                <span>
+                                    {{ item.stock }}
+                                </span>
+
+                                個
+
+                            </p>
+
+
+                            {% else %}
+
+                            <p>
+
+                                残り
+
+                                <span>
+                                    {{ item.stock }}
+                                </span>
+
+                                個
+
+                            </p>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =========================
+                     購入ボタン
+                ========================== -->
+
+                <div class="footer">
+
+                    {% if item.stock == 0 %}
+
+                    <button
+                        type="button"
+                        name="buy"
+                        disabled
+                    >
+                        SOLD OUT
+                    </button>
+
+
+                    {% else %}
+
+                    <button
+                        type="button"
+                        name="buy"
+                    >
+                        購入する
+                    </button>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =========================
+         JavaScript
+    ========================== -->
+
+    <script
+        type="module"
+        src="{{ url_for('static', filename='js/index.js') }}"
+        defer
+    ></script>
+
+</body>
+
 </html>
