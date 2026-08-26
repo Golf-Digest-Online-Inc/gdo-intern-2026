@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>キャディバッグ</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/index.styles.css') }}">
+</head>
+
+<body>
+
+<h1 class="shop-name">golf item shop</h1>
+
+<!-- ページ移動メニュー -->
+<div class="menu">
+    <a href="/">トップ</a>
+    <a href="/bag">キャディバッグ</a>
+    <a href="/driver">クラブ</a>
+    <a href="/ball">ボール</a>
+</div>
+
+<h2 class="category">ゴルフバッグ</h2>
+
+{% for item in items %}
+
+<div class="whole">
+
+    <div class="item" data-id="{{ item.id }}">
+
+        <div class="thumbnail">
+            <img src="{{ url_for('static', filename=item.image) }}">
+        </div>
+
+        <div class="detail">
+
+            <div class="name">
+                <p>{{ item.name }}</p>
+            </div>
+
+            <div class="stock">
+                <p>残り<span>{{ item.stock }}</span>個</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <button type="button" name="buy">購入</button>
+    </div>
+
+</div>
+
+{% endfor %}
+<!-- 購入確認ポップアップ -->
+<div id="purchase-modal" class="modal">
+
+    <div class="modal-content">
+
+        <h2>購入確認</h2>
+
+        <p id="modal-item-name"></p>
+
+        <p>この商品を購入しますか？</p>
+
+        <div class="modal-buttons">
+            <button id="cancel-button" type="button">
+                キャンセル
+            </button>
+
+            <button id="confirm-button" type="button">
+                購入する
+            </button>
+        </div>
+
+    </div>
+
+</div>
+<script type="module"
+        src="{{ url_for('static', filename='js/index.js') }}"
+        defer></script>
+
+</body>
+</html>

@@ -1,21 +1,56 @@
+/* 全体 */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.10)),
+        url("../images/golf-background.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
 p {
     margin: unset;
 }
 
-img {
-    width: 200px;
+/* 店名 */
+.shop-name {
+    background: rgba(0, 50, 35, 0.9);
+    color: white;
+    font-size: 46px;
+    text-align: center;
+    padding: 25px;
+    margin: 0 0 25px;
+
+    letter-spacing: 4px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
+/* 商品全体 */
 .whole {
     width: 480px;
-    border: 3px double;
-    margin-bottom: 24px;
+    margin: 20px auto 24px;
+
+    background-color: rgba(255, 255, 255, 0.83);
+
+    border: none;
+    border-radius: 15px;
+
+    padding: 20px;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
 }
 
+/* 商品 */
 .item {
     display: flex;
 }
 
+
+/* 商品画像 */
 .thumbnail {
     width: 240px;
     height: 240px;
@@ -24,35 +59,231 @@ img {
     align-items: center;
 }
 
+img {
+    width: 200px;
+}
+
+/* 商品詳細 */
 .detail {
     width: 240px;
     height: 240px;
+    margin-right: 24px;
 }
 
+/* 商品名・在庫 */
 .name,
-.stock
-{
+.stock {
     height: 100px;
 }
 
-button[name="add"] {
-    height: fit-content;
+/* 商品名 */
+.name p {
+    color: #087f5b;
+    font-size: 30px;
+    font-weight: bold;
 }
 
-.footer {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 12px;
-}
-
-.detail,
-.footer
-{
-    margin-right: 24px;
+/* 在庫 */
+.stock p {
+    color: #1976d2;
+    font-size: 20px;
 }
 
 .stock > p > span {
     font-size: 3em;
     margin-left: 8px;
     margin-right: 8px;
+}
+
+/* 下部 */
+.footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 24px;
+    margin-bottom: 12px;
+}
+
+/* 購入ボタン */
+button[name="buy"] {
+    background-color: #2660f3;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 18px;
+    border-radius: 25px;
+    cursor: pointer;
+
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    transition: 0.3s;
+}
+
+/* マウスを乗せたとき */
+button[name="buy"]:hover {
+    background-color: #136419;
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+button[name="buy"]:hover {
+    background-color: #ed0c0c;
+}
+/* メニューボタン */
+.menu {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.menu a {
+    background: #087f5b;
+    color: white;
+    text-decoration: none;
+
+    padding: 12px 30px;
+    border-radius: 30px;
+
+    font-weight: bold;
+
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+
+    transition: 0.3s;
+}
+
+.menu a:hover {
+    background: #054834;
+    transform: translateY(-6px);
+
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.category {
+    color: #087f5b;
+    border-left: 8px solid #1976d2;
+    padding-left: 12px;
+    margin: 40px auto 20px;
+    width: 480px;
+}
+/* 購入確認ポップアップ */
+.modal {
+    display: none;
+
+    position: fixed;
+    z-index: 1000;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(0, 0, 0, 0.55);
+
+    justify-content: center;
+    align-items: center;
+}
+
+/* ポップアップ本体 */
+.modal-content {
+    width: 400px;
+
+    background-color: white;
+
+    padding: 30px;
+
+    border-radius: 15px;
+
+    text-align: center;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+
+    animation: popup 0.2s ease;
+}
+
+/* タイトル */
+.modal-content h2 {
+    color: #087f5b;
+
+    margin-top: 0;
+
+    font-size: 28px;
+}
+
+/* 商品名 */
+#modal-item-name {
+    font-size: 22px;
+
+    font-weight: bold;
+
+    color: #333;
+}
+
+/* ボタン */
+.modal-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    margin-top: 25px;
+}
+
+.modal-buttons button {
+    padding: 12px 25px;
+
+    border: none;
+
+    border-radius: 25px;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+/* キャンセル */
+#cancel-button {
+    background-color: #777;
+
+    color: white;
+}
+
+#cancel-button:hover {
+    background-color: #555;
+
+    transform: translateY(-3px);
+}
+
+/* 購入する */
+#confirm-button {
+    background-color: #087f5b;
+
+    color: white;
+}
+
+#confirm-button:hover {
+    background-color: #054834;
+
+    transform: translateY(-3px);
+
+    box-shadow: 0 7px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* ポップアップ表示アニメーション */
+@keyframes popup {
+
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+
 }

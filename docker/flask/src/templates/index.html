@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.styles.css') }}">
   </head>
   <body>
+     <h1 class="shop-name">golf item shop</h1>
+     <div class="menu">
+    <a href="/bag">キャディバッグ</a>
+    <a href="/driver">クラブ</a>
+    <a href="/ball">ボール</a>
+</div>
     {% for item in items %}
     <div class="whole">
       <div class="item" data-id="{{ item.id }}">
@@ -28,6 +34,30 @@
       </div>
     </div>
     {% endfor %}
+    <!-- 購入確認ポップアップ -->
+<div id="purchase-modal" class="modal">
+
+    <div class="modal-content">
+
+        <h2>購入確認</h2>
+
+        <p id="modal-item-name"></p>
+
+        <p>この商品を購入しますか？</p>
+
+        <div class="modal-buttons">
+            <button id="cancel-button" type="button">
+                キャンセル
+            </button>
+
+            <button id="confirm-button" type="button">
+                購入する
+            </button>
+        </div>
+
+    </div>
+
+</div>
     <script type="module" src="{{ url_for('static', filename='js/index.js') }}" defer></script>
   </body>
 </html>

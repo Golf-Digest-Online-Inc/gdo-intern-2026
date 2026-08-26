@@ -51,12 +51,52 @@ def index():
             except Exception as e:
                 return jsonify({"db": "error", "detail": str(e)}), 500
 
+@app.route("/bag")
+def bag():
+    with get_connection() as conn:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute("""
+                SELECT * FROM public.items
+                WHERE category = 'バッグ'
+                ORDER BY id ASC
+            """)
+            items = cur.fetchall()
+
+    return render_template("bag.html", items=items)
+
+
+@app.route("/driver")
+def driver():
+    with get_connection() as conn:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute("""
+                SELECT * FROM public.items
+                WHERE category = 'クラブ'
+                ORDER BY id ASC
+            """)
+            items = cur.fetchall()
+
+    return render_template("driver.html", items=items)
+
+
+@app.route("/ball")
+def ball():
+    with get_connection() as conn:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute("""
+                SELECT * FROM public.items
+                WHERE category = 'ボール'
+                ORDER BY id ASC
+            """)
+            items = cur.fetchall()
+
+    return render_template("ball.html", items=items)
+
 
 @app.route("/buy", methods=["POST"])
 def buy():
     data = request.get_json()
-    # 同時アクセスを再現しやすいように5秒待機させる
-    time.sleep(5)
+    
     # POSTで送られてきたデータをデバッグログに出力
     logging.debug(data)
     id = int(data.get("id"))
