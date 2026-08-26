@@ -1,6 +1,11 @@
 (() => {
-  document.querySelectorAll("button").forEach((el, i) => {
-    const stock = el.closest(".whole").querySelector(".stock span").innerText;
+  document.querySelectorAll("button[name='buy']").forEach((el, i) => {
+    const stockElement =
+  el.closest(".whole").querySelector(".stock span");
+
+if (!stockElement) return;
+
+const stock = stockElement.innerText;
     // if (stock > 0) {
       // 在庫が1以上の場合はボタンを有効にする
       // el.disabled = false;
@@ -13,10 +18,20 @@
         });
 
         if (res.status === 200) {
-          const data = await res.json();
-          el.closest(".whole").querySelector(".stock span").innerText = data.stock;
-          alert(data.message);
-        }
+  const data = await res.json();
+
+  if (data.stock == 0) {
+    el.closest(".whole").querySelector(".stock").innerHTML =
+      '<p style="color:red;font-weight:bold;">SOLD OUT</p>';
+
+    el.disabled = true;
+    el.innerText = "SOLD OUT";
+  } else {
+    el.closest(".whole").querySelector(".stock span").innerText = data.stock;
+  }
+
+  alert(data.message);
+}
       };
     // }
   });

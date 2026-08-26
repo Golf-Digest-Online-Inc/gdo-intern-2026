@@ -6,28 +6,72 @@
     <link rel="icon" href="https://www.golfdigest.co.jp/favicon.ico">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.styles.css') }}">
   </head>
+  <script>
+function showCategory(category) {
+    const items = document.querySelectorAll('.whole');
+
+    items.forEach(item => {
+        if (category === 'all') {
+            item.style.display = 'block';
+        } else {
+            item.style.display =
+                item.classList.contains(category)
+                ? 'block'
+                : 'none';
+        }
+    });
+}
+</script>
   <body>
+
+<header class="header">
+    <h1>PREMIUM GOLF COLLECTION</h1>
+</header>
+
+
+<nav style="background:#232f3e;color:white;padding:10px;">
+    <button onclick="showCategory('all')">ホーム</button>
+    <button onclick="showCategory('bag')">キャディバッグ</button>
+    <button onclick="showCategory('club')">クラブ</button>
+    <button onclick="showCategory('ball')">ボール</button>
+</nav>
+
+<h2 style="margin-left:20px;">おすすめ商品</h2>
+
     {% for item in items %}
-    <div class="whole">
+    <div class="whole
+      {% if 'バッグ' in item.name %} bag{% endif %}
+      {% if 'ドライバー' in item.name or 'アイアン' in item.name or 'パター' in item.name %} club{% endif %}
+      {% if 'ボール' in item.name %} ball{% endif %}
+       ">
       <div class="item" data-id="{{ item.id }}">
         <div class="thumbnail">
           <img src="{{ url_for('static', filename=item.image) }}">
         </div>
         <div class="detail">
-          <div class="name">
-            <p>{{ item.name }}</p>
+         <div class="name">
+          <p>{{ item.name }}</p>
+          <p>¥{{ item.price }}</p>
           </div>
           <div class="stock">
+            {% if item.stock == 0 %}
+            <p style="color:red; font-weight:bold;">SOLD OUT</p>
+            {% else %}
             <p>残り<span>{{ item.stock }}</span>個</p>
-          </div>
+            {% endif %}
+            </div>
         </div>
       </div>
       <div class="footer">
-        <!-- <button type="button" name="buy" disabled="disabled">購入</button> -->
-        <button type="button" name="buy">購入</button>
-      </div>
+          {% if item.stock == 0 %}
+          <button type="button" disabled>SOLD OUT</button>
+          {% else %}
+          <button type="button" name="buy">購入</button>
+          {% endif %}
+      </div>      
     </div>
     {% endfor %}
     <script type="module" src="{{ url_for('static', filename='js/index.js') }}" defer></script>
   </body>
+  
 </html>

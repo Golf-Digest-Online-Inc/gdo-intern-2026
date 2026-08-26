@@ -1,8 +1,8 @@
 # ローカル環境ではデバッグできるログレベルにする
 # 実際の稼働環境で接続情報は機微情報なのでログなどに出力しない
 # ログに出力することで外部に漏洩するリスクがあり、攻撃などに用いられてしまう
-LOG_LEVEL=DEBUG
-# LOG_LEVEL=INFO
-DATABASE_URL=postgresql://appuser:apppassword@postgres:5432/appdb
+# LOG_LEVEL=DEBUG
+LOG_LEVEL=INFO
+# DATABASE_URL=postgresql://appuser:apppassword@postgres:5432/appdb
 # Dockerネットワーク上のホスト参照はDockerサービス名になる
-# DATABASE_URL=postgresql://{username}:{password}@{hostname}:{port}/{database}
+DATABASE_URL=postgresql://{username}:{password}@{hostname}:{port}/{database}

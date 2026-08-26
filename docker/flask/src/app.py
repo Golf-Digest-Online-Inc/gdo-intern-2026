@@ -34,6 +34,17 @@ logging.debug("DATABASE_URL='" + DATABASE_URL + "'")
 def get_connection():
     return psycopg2.connect(DATABASE_URL)
 
+@app.route("/category/<category>")
+def category(category):
+    with get_connection() as conn:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute(
+                "SELECT * FROM public.items WHERE category = %s",
+                (category,)
+            )
+            items = cur.fetchall()
+
+            return render_template("index.html", items=items)
 
 @app.route("/")
 def index():
@@ -117,3 +128,4 @@ def db_check():
 if __name__ == "__main__":
     isDebug = LOG_LEVEL == "DEBUG"
     app.run(host="0.0.0.0", port=5000, debug=isDebug)
+    

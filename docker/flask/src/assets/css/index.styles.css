@@ -7,7 +7,7 @@ img {
 }
 
 .whole {
-    width: 480px;
+    width: 300px;
     border: 3px double;
     margin-bottom: 24px;
 }
@@ -32,17 +32,18 @@ img {
 .name,
 .stock
 {
-    height: 100px;
+    height: 60px;
 }
 
 button[name="add"] {
     height: fit-content;
 }
 
-.footer {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 12px;
+.footer{
+    display:flex;
+    justify-content:center;
+    margin-top:20px;
+    margin-bottom:12px;
 }
 
 .detail,
@@ -55,4 +56,88 @@ button[name="add"] {
     font-size: 3em;
     margin-left: 8px;
     margin-right: 8px;
+}
+body{
+    font-family: Arial, sans-serif;
+    background:#eaeded;
+}
+
+.whole{
+    background:white;
+    margin:20px;
+    padding:15px;
+    border-radius:8px;
+}
+
+button{
+    background:#ffd814;
+    border:none;
+    padding:10px 20px;
+    border-radius:20px;
+    cursor:pointer;
+}
+body {
+    background-image: url("../images/slide02.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    
+}
+.header{
+    background:#0b1f14;
+    padding:20px;
+    text-align:center;
+}
+
+.header h1{
+    color:white;
+    font-size:40px;
+    letter-spacing:4px;
+    font-weight:300;
+}
+body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.header {
+    width: 100%;
+}
+
+whole{
+    width: 30%;
+    min-width: 300px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+img {
+    width: 120px;
+}
+
+.thumbnail {
+    width: 130px;
+    height: 130px;
+}
+
+.detail {
+    width: 150px;
+    height: 130px;
+}
+nav{
+    background:#1f2d44;
+    padding:15px;
+    display:flex;
+    gap:10px;
+    width:fit-content;
+    border-radius:10px;
+}
+nav{
+    height:auto;
+}
+h2{
+    width: 100%;
+    margin-left: 20px;
 }
