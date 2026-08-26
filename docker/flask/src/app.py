@@ -55,7 +55,7 @@ def index():
 @app.route("/buy", methods=["POST"])
 def buy():
     data = request.get_json()
-    # 同時アクセスを再現しやすいように5秒待機させる
+   #  同時アクセスを再現しやすいように5秒待機させる
     time.sleep(5)
     # POSTで送られてきたデータをデバッグログに出力
     logging.debug(data)
