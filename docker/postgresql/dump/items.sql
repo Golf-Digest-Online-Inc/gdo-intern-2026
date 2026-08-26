@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict i6hoJa45AiPX6DWUwWBXdLpRPepi9D7DRrXJfiwH63KyvCapOAnP3jQTAhj8Egt
+\restrict l5rwFrSaXCUqMnr0P0bFsgHgZRqaYLZeCAywNTNBcvt0N6VxJAbIImvzMvkAZ42
 
 -- Dumped from database version 18.3 (Debian 18.3-1.pgdg13+1)
 -- Dumped by pg_dump version 18.3 (Debian 18.3-1.pgdg13+1)
@@ -92,5 +92,5 @@ ALTER TABLE ONLY public.items
 -- PostgreSQL database dump complete
 --
 
-\unrestrict i6hoJa45AiPX6DWUwWBXdLpRPepi9D7DRrXJfiwH63KyvCapOAnP3jQTAhj8Egt
+\unrestrict l5rwFrSaXCUqMnr0P0bFsgHgZRqaYLZeCAywNTNBcvt0N6VxJAbIImvzMvkAZ42
 
