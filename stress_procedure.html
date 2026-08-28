@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>stressコマンド インストール・実行手順書</title>
+<style>
+  body {
+    font-family: "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+    line-height: 1.7;
+    color: #222;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+    background: #fafafa;
+  }
+  h1 {
+    border-bottom: 3px solid #2c5f8a;
+    padding-bottom: 8px;
+    color: #1f3a52;
+  }
+  h2 {
+    margin-top: 40px;
+    border-left: 6px solid #2c5f8a;
+    padding-left: 10px;
+    color: #1f3a52;
+  }
+  .step-number {
+    display: inline-block;
+    background: #2c5f8a;
+    color: #fff;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    line-height: 24px;
+    font-size: 14px;
+    margin-right: 8px;
+  }
+  pre {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 14px 16px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  code {
+    font-family: Consolas, Monaco, "Courier New", monospace;
+  }
+  .note {
+    background: #fff8e1;
+    border-left: 4px solid #f0ad4e;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .caution {
+    background: #fdecea;
+    border-left: 4px solid #d9534f;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  table {
+    border-collapse: collapse;
+    margin: 10px 0;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+  .updated {
+    color: #666;
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<h1>stressコマンド インストール・実行手順書</h1>
+<p class="updated">最終更新日：2026年8月21日</p>
+
+<div class="caution">
+stress（サーバーに意図的に高い負荷をかけて動作を検証するツール）は、CPU・メモリ等に高い負荷をかけるコマンドです。本番環境や共用環境で実行するとサービスに影響を及ぼす可能性があるため、実施前に対象環境・作業時間帯を関係者と確認してください。
+</div>
+
+<h2><span class="step-number">1</span>stressのインストール</h2>
+<pre><code>sudo apt install -y stress</code></pre>
+<div class="note">
+sudo権限（管理者権限）が必要な操作です。実行環境によってはaptの前に「sudo apt update」が必要な場合があります。
+</div>
+
+<h2><span class="step-number">2</span>インストールの確認</h2>
+<pre><code>stress --version</code></pre>
+<p>バージョン情報が表示されれば、インストールは正常に完了している。</p>
+
+<h2><span class="step-number">3</span>負荷テストの実行</h2>
+<pre><code>stress --cpu 2 --timeout 600</code></pre>
+<p>上記コマンドは、CPUに負荷をかけるプロセスを2つ起動し、600秒（10分）後に自動的に停止する。</p>
+<table>
+  <tr><th>オプション</th><th>説明</th></tr>
+  <tr><td>--cpu N</td><td>CPU負荷をかけるワーカープロセス数をNで指定する</td></tr>
+  <tr><td>--timeout N</td><td>負荷テストを継続する秒数をNで指定する</td></tr>
+</table>
+<div class="note">
+負荷テストを途中で中断する場合は、実行中のターミナルで「Ctrl + C」を入力する。
+</div>
+
+<h2><span class="step-number">4</span>topコマンドによるCPU負荷の確認</h2>
+<p>負荷テストの実行中に、別のターミナルを開いて以下のコマンドを実行する。</p>
+<pre><code>top</code></pre>
+<p>表示された一覧の「%CPU」列で、stressコマンドが起動したプロセス（COMMAND列が「stress」）の負荷状況を確認する。</p>
+<table>
+  <tr><th>項目</th><th>説明</th></tr>
+  <tr><td>%CPU</td><td>各プロセスが使用しているCPU使用率</td></tr>
+  <tr><td>%Cpu(s)</td><td>画面上部に表示される、システム全体のCPU使用率</td></tr>
+  <tr><td>COMMAND</td><td>実行中のプロセス名（stressのワーカープロセスは「stress」と表示される）</td></tr>
+</table>
+<div class="note">
+topコマンドを終了する場合は「q」キーを入力する。
+</div>
+
+</body>
+</html>
